@@ -23,14 +23,14 @@ export function checkTrainingRx(input,t){
  const checks=[
  {key:'rp',label:'Начало рецепта',ok:/^\s*(rp\s*[.:]|recipe\s*:)/i.test(input),help:'Начните с Rp.: или Recipe:.'},
  {key:'drug',label:'Латинское название и соль',ok:words(primary.replace(/^rp\s*[.:]*\s*/,'').replace(/^(sol|tab|aer)\s*/, '').split(/\d/)[0])===words(latin),help:'В этом образце требуется '+latin+'. Другую латинскую форму названия необходимо сверить с преподавателем.'},
- {key:'dose',label:'Доза, концентрация и объём',ok:equal(dose(a),dose(r))&&a.includes('%')===r.includes('%')&&/\bml\b/.test(a)===/\bml\b/.test(r),help:'По условию: '+t.strength+'. Масса указана в граммах, если единица не написана; мг и мкг пересчитываются.'},
- {key:'quantity',label:'Количество единиц',ok:count(a)===count(r),help:'В данном упражнении количество: '+t.reference_package_count+'.'},
+ {key:'dose',label:'Доза, концентрация и объём',ok:equal(dose(a),dose(r))&&a.includes('%')===r.includes('%')&&/\bml\b/.test(a)===/\bml\b/.test(r),help:'В образце: '+t.strength+'. Масса указана в граммах, если единица не написана; мг и мкг пересчитываются.'},
+ {key:'quantity',label:'Количество единиц',ok:count(a)===count(r),help:'В образце количество: '+t.reference_package_count+'.'},
  {key:'form',label:'Форма и упаковка',ok:equal(form(a),form(r))&&(/d\s*\.\s*t\s*\.\s*d\s*\./.test(a)===/d\s*\.\s*t\s*\.\s*d\s*\./.test(r)),help:'Проверьте форму «'+t.form+'», обозначение D.t.d. и упаковку.'},
  {key:'signature',label:'Сигнатура',ok:actual.hasSig&&!!actual.sig.trim(),help:'После S. укажите способ применения по условию.'}
  ];
  // Free clinical language is never judged by substring matching.
  const sigMatch=words(actual.sig)===words(ref.sig);
  const failed=checks.some(x=>!x.ok);
- return {checks,status:failed?'incorrect':sigMatch&&!t.manual_signature_review?'matched':'review',message:failed?'Есть расхождения с условиями учебного образца.':sigMatch&&!t.manual_signature_review?'Все элементы совпали с заданным учебным образцом.':'Формальные элементы совпали. Сигнатуру необходимо сверить: автоматическая проверка не подтверждает клиническую схему.',signature:ref.sig};
+ return {checks,status:failed?'incorrect':sigMatch&&!t.manual_signature_review?'matched':'review',message:failed?'Есть отличия от сохранённого учебного образца. Они не всегда являются ошибками: другую допустимую форму, количество или схему нужно сверить с преподавателем.':sigMatch&&!t.manual_signature_review?'Все элементы совпали с заданным учебным образцом.':'Формальные элементы совпали. Сигнатуру необходимо сверить: автоматическая проверка не подтверждает клиническую схему.',signature:ref.sig};
 }
 export function rxCondition(t){return `Выпишите: ${t.form}; ${t.strength}; количество ${t.reference_package_count}. Сигнатура учебного образца: ${parts(t.reference_prescription).sig}.`;}

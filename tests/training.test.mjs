@@ -10,3 +10,10 @@ test('Every source reference matches formal checks, ambiguous references are blo
 test('Dose x10, wrong salt, volume, count, route and no signature cannot pass',()=>{const t=get('adrenaline');for(const change of [['0,1%','1%'],['hydrochloridi','hydrotartratis'],['1 ml','10 ml'],['N. 10','N. 20'],['внутримышечно','внутривенно']])assert.notEqual(checkTrainingRx(t.reference_prescription.replace(...change),t).status,'matched');assert.equal(checkTrainingRx(t.reference_prescription.split('S.')[0],t).status,'incorrect');});
 test('Decimal separators, mg conversion, whitespace and common Latin abbreviations',()=>{const t=get('anaprilin');const r=checkTrainingRx(t.reference_prescription.replace('Tabulettas','Tab.').replace('0,01','10 mg').replaceAll(' ','  '),t);assert.equal(r.status,'matched',JSON.stringify(r));});
 test('Free signature is sent to manual review instead of being falsely approved',()=>{const t=get('anaprilin');assert.equal(checkTrainingRx(t.reference_prescription.replace('3 раза','30 раз'),t).status,'review');});
+
+test('Sufianova classifications and names are used in adrenergic cards',()=>{
+ assert.match(PROFILES.galazolin.classification,/α₂/);
+ assert.match(PROFILES.noradrenaline.classification,/α₁, α₂, β₁/);
+ for(const t of BANK.templates.filter(t=>t.topic.startsWith('Адрено'))){assert.match(PROFILES[t.id].classificationSource,/Суфианова/);assert.ok(PROFILES[t.id].mechanism);}
+ assert.ok(identify('Салметерол',get('salmeterol')));
+});
