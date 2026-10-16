@@ -1,0 +1,12 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {BANK} from '../src/bank-data.js';
+import {QUESTIONS,PROFILES} from '../src/training-data.js';
+import {identify,checkTrainingRx} from '../src/training-checker.js';
+const get=id=>BANK.templates.find(t=>t.id===id);
+test('Every template has multiple questions, a profile and a valid target',()=>{for(const t of BANK.templates){assert.ok(QUESTIONS.filter(q=>q.templateId===t.id).length>=2,t.id);assert.ok(PROFILES[t.id].indications.length);}for(const q of QUESTIONS)assert.ok(get(q.templateId));assert.equal(new Set(QUESTIONS.map(q=>q.id)).size,QUESTIONS.length);});
+test('Identification accepts full aliases, never substrings or a different drug',()=>{assert.ok(identify('АТРОВЕНТ',get('ipratropium')));assert.ok(identify('неостигмина метилсульфат',get('proserin_amp')));for(const a of ['про','', 'атропин','Прозерин и атропин'])assert.equal(identify(a,get('proserin_amp')),false);});
+test('Every source reference matches formal checks, ambiguous references are blocked',()=>{for(const t of BANK.templates){const r=checkTrainingRx(t.reference_prescription,t);if(t.status!=='verified')assert.equal(r.status,'review');else assert.ok(r.checks.every(c=>c.ok),t.id+JSON.stringify(r));}});
+test('Dose x10, wrong salt, volume, count, route and no signature cannot pass',()=>{const t=get('adrenaline');for(const change of [['0,1%','1%'],['hydrochloridi','hydrotartratis'],['1 ml','10 ml'],['N. 10','N. 20'],['внутримышечно','внутривенно']])assert.notEqual(checkTrainingRx(t.reference_prescription.replace(...change),t).status,'matched');assert.equal(checkTrainingRx(t.reference_prescription.split('S.')[0],t).status,'incorrect');});
+test('Decimal separators, mg conversion, whitespace and common Latin abbreviations',()=>{const t=get('anaprilin');const r=checkTrainingRx(t.reference_prescription.replace('Tabulettas','Tab.').replace('0,01','10 mg').replaceAll(' ','  '),t);assert.equal(r.status,'matched',JSON.stringify(r));});
+test('Free signature is sent to manual review instead of being falsely approved',()=>{const t=get('anaprilin');assert.equal(checkTrainingRx(t.reference_prescription.replace('3 раза','30 раз'),t).status,'review');});
