@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#102238">
+  <meta name="description" content="PHARMA TMU — учебный тренажёр латинских рецептов и база фармакологии.">
+  <title>PHARMA TMU — Pharmacology Workspace</title>
+  <link rel="stylesheet" href="./src/styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Основная навигация">
+      <a class="brand" href="#dashboard" data-link="dashboard" aria-label="PHARMA TMU — главная">
+        <div class="brand-symbol"><span class="brand-cross"></span></div>
+        <div><strong>PHARMA<span class="brand-tmu">TMU</span></strong><span class="brand-subtitle">STUDY LAB / v0.2</span></div>
+      </a>
+      <div class="side-divider"></div>
+      <p class="nav-eyebrow">РАБОЧЕЕ ПРОСТРАНСТВО</p>
+      <nav class="nav-links">
+        <a data-link="dashboard" href="#dashboard" class="nav-item active"><span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="5" rx="1.5"/><rect x="13" y="10" width="8" height="11" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/></svg></span>Обзор</a>
+        <a data-link="lab" href="#lab" class="nav-item"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M8 4h8M8 4v6l-4.8 7.1A2.3 2.3 0 0 0 5.2 21h13.6a2.3 2.3 0 0 0 2-3.9L16 10V4M7 15h10"/></svg></span>Рецептурная лаборатория <span class="nav-count" id="navRecipeCount">10</span></a>
+        <a data-link="bank" href="#bank" class="nav-item"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M5 4h14v16H5zM8 8h8M8 12h8M8 16h5"/></svg></span>Банк вопросов <span class="nav-count" id="navBankCount">40</span></a>
+        <a data-link="catalog" href="#catalog" class="nav-item"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 1 4 17.5zM4 17.5A2.5 2.5 0 0 1 6.5 15H20M8 7h8M8 11h6"/></svg></span>Каталог препаратов</a>
+        <a data-link="stats" href="#stats" class="nav-item"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M4 20V11M10 20V5M16 20v-8M22 20V8M2 20h21"/></svg></span>Мой прогресс</a>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="side-info"><span class="side-info-kicker">УЧЕБНАЯ ОСНОВА</span><b>Фармакология ТМУ</b><span>Методические указания · 2024</span><span>Фиксированная база заданий</span></div>
+        <div class="sidebar-user"><div class="user-avatar">S</div><div><b>Студент</b><small>Локальный режим</small></div><span class="online-dot"></span></div>
+      </div>
+    </aside>
+    <div class="main-frame">
+      <header class="topbar">
+        <div class="crumb"><span>STUDY WORKSPACE</span><span class="crumb-separator">/</span><strong id="crumbCurrent">Обзор</strong></div>
+        <div class="top-actions"><span class="online-pill"><span></span> Без подключения к API</span><span class="today" id="todayText"></span><div class="header-profile">ST</div></div>
+      </header>
+      <main id="viewDashboard" class="view" aria-labelledby="dashboardHeading">
+        <div class="intro-line"><span class="intro-marker"></span>PHARMA TMU / ОБРАЗОВАТЕЛЬНАЯ ПЛАТФОРМА <span class="beta">BETA RELEASE 02</span></div>
+        <section class="hero">
+          <div class="hero-copy"><p class="hero-label">ТВОЯ СИСТЕМА ПОДГОТОВКИ</p><h1 id="dashboardHeading">Фармакология.<br><em>Знание в действии.</em></h1><p class="hero-desc">Отрабатывай рецептуру и 40 новых заданий по фармакологии. Выбирай препараты, записывай прописи и сверяйся с источниками.</p><button class="button button-lime" data-goto="lab">Начать тренировку <span aria-hidden="true">↗</span></button></div>
+          <div class="hero-art" aria-hidden="true"><div class="art-circle art-circle-one"></div><div class="art-circle art-circle-two"></div><div class="art-axis art-axis-one"></div><div class="art-axis art-axis-two"></div><div class="art-pulse">R<span>ₓ</span></div><div class="art-label">PRECISION <span>IS A PRACTICE.</span></div><div class="art-corner">47°09' N<br>65°32' E</div></div>
+        </section>
+        <div class="section-head"><div><span class="eyebrow">ТВОЙ РЕЗУЛЬТАТ</span><h2>Краткая статистика</h2></div><span class="section-aside">Результаты сохраняются в браузере</span></div>
+        <section class="stat-grid" id="dashboardStats"></section>
+        <div class="dashboard-grid">
+          <section class="panel spotlight"><div class="panel-top"><span class="eyebrow">СЕГОДНЯ В ФОКУСЕ</span><span class="tiny-pill">РЕКОМЕНДУЕМ</span></div><div class="spotlight-icon">Rₓ</div><h3>Латинская рецептура</h3><p>Доза, форма, количество, сигнатура. Пройди полный цикл от задания до разбора ошибок.</p><button class="text-link" data-goto="lab">Перейти к заданиям <span>↗</span></button></section>
+          <section class="panel activity"><div class="panel-top"><span class="eyebrow">ПОСЛЕДНЯЯ АКТИВНОСТЬ</span><span class="soft-icon">↗</span></div><div id="activityList" class="activity-list"></div></section>
+        </div>
+        <div class="bank-banner"><div><span class="eyebrow">НОВОЕ · БАНК 4 ТЕМ</span><h3>40 вопросов и 32 рецептурных образца</h3><p>Холиномиметики, холиноблокаторы, адреномиметики и адреноблокаторы. Выбор препарата и самостоятельная сверка рецепта.</p></div><button class="button button-lime" data-goto="bank">Открыть банк ↗</button></div><div class="source-note"><span class="note-icon">i</span> Новая база импортирована как предоставлена: 37 вопросов имеют статус verified, 3 — needs_review. Строгая оценка полного рецепта в этом банке отключена согласно его собственным ограничениям. Не использовать для реальных назначений.</div>
+      </main>
+
+      <main id="viewLab" class="view hidden" aria-labelledby="labHeading">
+        <div class="view-heading"><div><div class="intro-line"><span class="intro-marker"></span>ПРАКТИКУМ / РЕЦЕПТУРА</div><h1 id="labHeading">Рецептурная <em>лаборатория</em></h1><p>Выпиши рецепт самостоятельно — система проверит каждую значимую часть прописи.</p></div><div class="heading-index"><span>MODULE</span><strong>01</strong></div></div>
+        <div class="lab-layout">
+          <section class="workbench panel">
+            <div class="workbench-head"><span class="eyebrow">ЗАДАНИЕ <span id="taskIndex">01 / 10</span></span><span class="difficulty" id="taskDifficulty">СРЕДНЯЯ</span></div>
+            <div class="workbench-title"><span class="task-chip">Rₓ</span><div><h2 id="taskDrug"></h2><p id="taskGroup"></p></div></div>
+            <p class="task-description" id="taskDescription"></p>
+            <div class="workbench-source" id="taskSource"></div>
+            <div class="editor-wrap"><div class="editor-top"><span><span class="editor-dot"></span> prescription.rx <span class="editor-dim">/ LATIN</span></span><span class="editor-hint">UTF-8 · TXT</span></div><label for="recipeInput" class="sr-only">Введите латинский рецепт</label><textarea id="recipeInput" spellcheck="false" placeholder="Rp.:&#10;&#10;D.t.d. N. ...&#10;S. ..." autocomplete="off"></textarea><div class="editor-bottom"><span>Напиши все обязательные части рецепта</span><span id="charCount">0 символов</span></div></div>
+            <div class="editor-actions"><button class="button button-primary" id="checkBtn">Проверить рецепт <span>→</span></button><button class="button button-plain" id="hintBtn">Подсказка</button><button class="button button-plain" id="answerBtn">Эталон</button><button class="button button-plain" id="nextBtn">Следующий ↗</button></div>
+            <div class="hint-panel hidden" id="hintPanel" role="status"></div>
+            <section class="feedback hidden" id="feedback" aria-live="polite"></section>
+            <section class="answer hidden" id="answerPanel"><div class="panel-top"><span class="eyebrow">УЧЕБНЫЙ ОБРАЗЕЦ</span><span>ТМУ 2024</span></div><pre id="answerText"></pre><p>Один из допустимых образцов оформления. Система принимает только предусмотренные проверкой варианты.</p></section>
+          </section>
+          <aside class="lab-aside"><div class="aside-header"><span class="eyebrow">ВЫБОР ЗАДАНИЯ</span><span id="taskCountLabel"></span></div><label class="sr-only" for="labFilter">Фильтр по группе</label><select id="labFilter" class="filter-select"></select><div id="taskList" class="task-list"></div><div class="aside-note"><span>!</span> Неверное действующее вещество, концентрация или масса ограничивают итоговую оценку — независимо от оформления.</div></aside>
+        </div>
+      </main>
+
+
+      <main id="viewBank" class="view hidden" aria-labelledby="bankHeading">
+        <div class="view-heading"><div><div class="intro-line"><span class="intro-marker"></span>РЕЦЕПТУРНЫЙ БАНК / ЗАНЯТИЯ № 5–8</div><h1 id="bankHeading">Банк <em>вопросов и ответов</em></h1><p>40 заданий из загруженного архива. Сначала попробуй ответить, затем открой учебный эталон и источники.</p></div><div class="heading-index"><span>BANK</span><strong>40</strong></div></div>
+        <div class="bank-topline">
+          <div class="bank-summary"><strong>40</strong><span>вопросов</span></div><div class="bank-summary"><strong>32</strong><span>эталона рецептов</span></div><div class="bank-summary"><strong>4</strong><span>темы</span></div><div class="bank-summary"><strong>3</strong><span>требуют сверки</span></div>
+        </div>
+        <div class="bank-mode-bar"><button type="button" class="bank-mode active" data-bank-mode="questions">Вопросы · 40</button><button type="button" class="bank-mode" data-bank-mode="templates">Справочник рецептов · 32</button></div>
+        <div class="bank-options"><select class="filter-select" id="bankTopic" aria-label="Тема фармакологии"></select><label class="search-box"><span>⌕</span><input id="bankSearch" autocomplete="off" aria-label="Поиск в банке" placeholder="Поиск по вопросу или препарату..."></label><label class="bank-check"><input id="bankStrict" type="checkbox" checked> Уточнённая формулировка</label></div>
+        <div class="bank-layout">
+          <section class="panel bank-workbench">
+            <div class="bank-question-meta"><span id="bankId" class="eyebrow"></span><span id="bankStatus" class="bank-status"></span></div>
+            <h2 id="bankPrompt" class="bank-prompt"></h2><div class="bank-instruction" id="bankInstruction"></div>
+            <div id="bankQuestionForm">
+              <label class="field-label" for="bankDrugAnswer">Название препарата</label><input class="bank-input" id="bankDrugAnswer" placeholder="Введи препарат, не подглядывая в ответ" autocomplete="off" spellcheck="false">
+              <div class="bank-actions"><button type="button" id="bankCheck" class="button button-primary">Проверить выбор →</button><button type="button" id="bankReveal" class="button button-plain">Показать ответ</button></div>
+              <section id="bankFeedback" class="bank-feedback hidden" aria-live="polite"></section>
+            </div>
+            <section id="bankAnswer" class="bank-answer hidden" aria-live="polite"><div class="bank-answer-header"><span class="eyebrow">ЭТАЛОН ИЗ ЗАГРУЖЕННОГО АРХИВА</span><span id="bankAnswerStatus"></span></div><h3 id="bankExpected"></h3><p id="bankRationale"></p><div id="bankAlternatives" class="bank-muted"></div><div id="bankNotes" class="bank-muted"></div>
+              <div class="bank-divider"></div><label class="field-label" for="bankPrescriptionInput">Попробуй написать рецепт</label><textarea class="bank-input bank-rx-input" id="bankPrescriptionInput" spellcheck="false" placeholder="Rp.:&#10;...&#10;D.S. ..."></textarea><div class="bank-actions"><button class="button button-primary" id="bankCompare">Сверить с образцом →</button></div>
+              <div class="bank-recipe hidden" id="bankReference"><div class="eyebrow">ОДИН ИЗ УЧЕБНЫХ ПРИМЕРОВ</div><pre id="bankRxText"></pre><p id="bankRxPolicy"></p><button type="button" class="small-button" id="bankSelfStudy">Отметить как изученное ✓</button></div>
+              <div class="bank-sources"><div class="eyebrow">УЧЕБНЫЕ ИСТОЧНИКИ</div><div id="bankSources"></div></div>
+            </section>
+            <div class="bank-pager"><button type="button" class="small-button" id="bankPrev">← Назад</button><span id="bankPosition"></span><button type="button" class="small-button" id="bankNext">Следующий →</button></div>
+          </section>
+          <aside class="panel bank-list-panel"><div class="panel-top"><span class="eyebrow" id="bankSideTitle">ВЫБОР ЗАДАНИЯ</span><span id="bankSideCount" class="muted-xs"></span></div><div class="bank-items" id="bankItems"></div></aside>
+        </div>
+        <div class="source-note"><span class="note-icon">i</span> В банке автоматически сопоставляется только выбор препарата по известным эталонам. Полные рецепты не оцениваются автоматически: условия заданий часто неполные. Метка «требует сверки» взята из самого архива.</div>
+      </main>
+
+      <main id="viewCatalog" class="view hidden" aria-labelledby="catalogHeading"><div class="view-heading"><div><div class="intro-line"><span class="intro-marker"></span>БАЗА ЗНАНИЙ / ВЕРСИЯ 0.1</div><h1 id="catalogHeading">Каталог <em>препаратов</em></h1><p>Исходные задания из методических указаний кафедры фармакологии ТМУ.</p></div><div class="heading-index"><span>LIBRARY</span><strong id="catalogTotal">10</strong></div></div><div class="catalog-controls"><label class="search-box"><span>⌕</span><input id="catalogSearch" placeholder="Поиск по препарату или группе…" aria-label="Поиск препаратов"></label><select id="catalogFilter" class="filter-select" aria-label="Фильтр по фармакологической группе"></select></div><div class="catalog-grid" id="catalogGrid"></div><div class="source-note">Поля для механизмов действия, противопоказаний и теоретических вопросов зарезервированы в расширяемой модели следующего этапа. Первичный релиз проверяет только рецептурные задания.</div></main>
+
+      <main id="viewStats" class="view hidden" aria-labelledby="statsHeading"><div class="view-heading"><div><div class="intro-line"><span class="intro-marker"></span>АНАЛИТИКА / ЛОКАЛЬНАЯ</div><h1 id="statsHeading">Мой <em>прогресс</em></h1><p>Посмотри историю попыток, частые ошибки и задания, которые стоит повторить.</p></div><div class="heading-index"><span>REPORT</span><strong>01</strong></div></div><div class="stat-grid" id="extendedStats"></div><div class="dashboard-grid stats-panels"><section class="panel"><div class="panel-top"><span class="eyebrow">ИСТОРИЯ ПРОВЕРОК</span><button class="small-button" id="exportProgress">Экспорт JSON ↓</button></div><div id="statsHistory" class="history-list"></div></section><section class="panel"><div class="panel-top"><span class="eyebrow">РАЗБОР ОШИБОК</span></div><div id="mistakeList" class="mistake-list"></div><button class="small-button danger" id="resetProgress">Сбросить историю</button></section></div></main>
+      <footer class="footer"><span>PHARMA TMU — учебная версия 0.2</span><span>Создано для практики · Не для медицинских назначений</span></footer>
+    </div>
+  </div>
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>

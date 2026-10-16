@@ -1,0 +1,11 @@
+{
+  "name": "pharma-tmu-trainer",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "description": "PHARMA TMU — тренажёр рецептуры и 40 заданий по четырём темам фармакологии",
+  "scripts": {
+    "dev": "python3 -m http.server 4173",
+    "test": "node --test tests/*.test.mjs"
+  }
+}
